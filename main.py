@@ -23,13 +23,14 @@ def scrape_exchange_rates(url, target_currencies):
             return []
 
         rows = table.find_all("tr")
-        data = []
+        data = {}
         for row in rows[1:]:  # 跳过表头
             cols = row.find_all("td")
             cols = [col.text.strip() for col in cols]
             # 筛选目标币种
             if cols and cols[0] in target_currencies:
-                data.append(cols)
+                if cols[0] not in data:
+                    data[cols[0]] = cols[3]
         return data
     else:
         print(f"Failed to fetch {url}, status code: {response.status_code}")
@@ -53,33 +54,30 @@ def send_to_wechat(title):
 # 主程序
 def main():
     target_currencies = ["欧元", "新加坡元"]
-    all_data = {}
     for url in urls:
         data = scrape_exchange_rates(url, target_currencies)
-        if data[0][0] not in all_data:
-            all_data[data[0][0]] = data[0][4]
 
     # 打印结果
-    if all_data:
+    if data:
         print("汇率信息：")
-        for key, value in all_data.items():
+        for key, value in data.items():
             print(key, value)
     else:
         print("未获取到数据。")
 
-    if float(all_data["欧元"]) < 760:
-        send_to_wechat(f"汇率降价，欧元：{all_data['欧元']}")
+    if float(data["欧元"]) < 760:
+        send_to_wechat(f"汇率降价，欧元：{data['欧元']}")
     time.sleep(0.5)
-    if float(all_data["新加坡元"]) < 540:
-        send_to_wechat(f"汇率降价，新加坡元：{all_data['新加坡元']}")
+    if float(data["新加坡元"]) < 540:
+        send_to_wechat(f"汇率降价，新加坡元：{data['新加坡元']}")
     time.sleep(0.5)
     # 测试Github Actions
     send_to_wechat(
-        f"{datetime.now()}，新加坡元：{all_data['新加坡元']}，欧元：{all_data['欧元']}"
+        f"{datetime.now()}，新加坡元：{data['新加坡元']}，欧元：{data['欧元']}"
     )
     if datetime.now().hour == 18:
         send_to_wechat(
-            f"{datetime.now().year}年{datetime.now().month}月{datetime.now().day}日，新加坡元：{all_data['新加坡元']}，欧元：{all_data['欧元']}"
+            f"{datetime.now().year}年{datetime.now().month}月{datetime.now().day}日，新加坡元：{data['新加坡元']}，欧元：{data['欧元']}"
         )
 
 
