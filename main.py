@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 from datetime import datetime
+import os
 
 # 定义目标URL
 urls = [
@@ -39,8 +40,13 @@ def scrape_exchange_rates(url, target_currencies):
 
 # 发送汇率信息到微信
 def send_to_wechat(title):
+    try:
+        appkey = os.environ["appkey"]
+    except KeyError:
+        appkey = "Token not available!"
+
     params = {
-        "appkey": "482d185a324970fed1037e054416b735-wPQ7KTLd",
+        "appkey": appkey,
         "title": title,
     }
     response = requests.get("https://cx.super4.cn/push_msg", params=params)
