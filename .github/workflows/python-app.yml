@@ -20,6 +20,6 @@ jobs:
         pip install -r requirements.txt
     - name: Execute python script
       env:
-        APPKEY: ${{ secrets.APPKEY}}
+        APPKEY: ${{ secrets.APPKEY }}
       run: |
         python main.py
