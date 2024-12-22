@@ -73,6 +73,10 @@ def main():
     if float(all_data["新加坡元"]) < 540:
         send_to_wechat(f"汇率降价，新加坡元：{all_data['新加坡元']}")
     time.sleep(0.5)
+    # 测试Github Actions
+    send_to_wechat(
+        f"{datetime.now()}，新加坡元：{all_data['新加坡元']}，欧元：{all_data['欧元']}"
+    )
     if datetime.now().hour == 18:
         send_to_wechat(
             f"{datetime.now().year}年{datetime.now().month}月{datetime.now().day}日，新加坡元：{all_data['新加坡元']}，欧元：{all_data['欧元']}"
