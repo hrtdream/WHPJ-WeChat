@@ -41,7 +41,7 @@ def scrape_exchange_rates(url, target_currencies):
 # 发送汇率信息到微信
 def send_to_wechat(title):
     try:
-        appkey = os.environ["appkey"]
+        appkey = os.environ["APPKEY"]
     except KeyError:
         appkey = "Token not available!"
 
