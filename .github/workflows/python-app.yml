@@ -1,7 +1,10 @@
 name: Send WHPJ to WeChat
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: "0 10 * * *"
+    - cron: "0 4 * * *"
+    - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -20,6 +23,6 @@ jobs:
         pip install -r requirements.txt
     - name: Execute python script
       env:
-        APPKEY: ${{ secrets.APPKEY}}
+        APPKEY: ${{ secrets.APPKEY }}
       run: |
         python main.py
