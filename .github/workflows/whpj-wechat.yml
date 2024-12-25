@@ -2,6 +2,8 @@ name: Send WHPJ to WeChat
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: whpj-wechat
 
 jobs:
   build:
