@@ -2,9 +2,7 @@ name: Send WHPJ to WeChat
 
 on:
   schedule:
-    - cron: "0 10 * * *"
-    - cron: "0 4 * * *"
-    - cron: "0 0 * * *"
+    - cron: "0 0,4,10 * * *"
 
 jobs:
   build:
