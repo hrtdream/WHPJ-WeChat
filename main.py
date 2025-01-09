@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import json
 
@@ -95,7 +95,9 @@ def save_to_json(data, filename="exchange_rates.json"):
     """
     try:
         # 获取当前时间
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        current_time = (datetime.now() + timedelta(hours=8)).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
 
         # 将当前时间添加到数据中
         data["timestamp"] = current_time
