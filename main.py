@@ -141,23 +141,24 @@ def main():
     # 保存数据为 JSON 文件
     save_to_json(combined_data)
 
+    # 改为通过微信小程序查看，不再通过传息发送消息
     # 条件判断并发送消息
-    try:
-        euro_rate = float(combined_data.get("欧元", "1000"))
-        sgd_rate = float(combined_data.get("新加坡元", "1000"))
+    # try:
+    #     euro_rate = float(combined_data.get("欧元", "1000"))
+    #     sgd_rate = float(combined_data.get("新加坡元", "1000"))
 
-        if euro_rate < 760:
-            send_to_wechat(f"汇率提醒：欧元降至 {euro_rate}")
-        time.sleep(0.5)  # 设置延迟防止发送消息过于频繁
-        if sgd_rate < 539:
-            send_to_wechat(f"汇率提醒：新加坡元降至 {sgd_rate}")
-        time.sleep(0.5)  # 设置延迟防止发送消息过于频繁
-        if datetime.now().hour >= 12:
-            send_to_wechat(
-                f"{datetime.now().year}年{datetime.now().month}月{datetime.now().day}日，新加坡元：{sgd_rate}，欧元：{euro_rate}"
-            )
-    except ValueError as e:
-        print(f"解析汇率时出错：{e}")
+    #     if euro_rate < 760:
+    #         send_to_wechat(f"汇率提醒：欧元降至 {euro_rate}")
+    #     time.sleep(0.5)  # 设置延迟防止发送消息过于频繁
+    #     if sgd_rate < 539:
+    #         send_to_wechat(f"汇率提醒：新加坡元降至 {sgd_rate}")
+    #     time.sleep(0.5)  # 设置延迟防止发送消息过于频繁
+    #     if datetime.now().hour >= 12:
+    #         send_to_wechat(
+    #             f"{datetime.now().year}年{datetime.now().month}月{datetime.now().day}日，新加坡元：{sgd_rate}，欧元：{euro_rate}"
+    #         )
+    # except ValueError as e:
+    #     print(f"解析汇率时出错：{e}")
 
 
 if __name__ == "__main__":
