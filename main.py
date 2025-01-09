@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import time
 from datetime import datetime
 import os
+import json
 
 # 定义目标 URL 列表
 URLS = [
@@ -83,6 +84,23 @@ def send_to_wechat(title):
         print(f"发送消息时发生错误：{e}")
 
 
+# 保存数据为 JSON 文件
+def save_to_json(data, filename="exchange_rates.json"):
+    """
+    将数据保存为 JSON 文件。
+
+    Args:
+        data (dict): 要保存的数据。
+        filename (str): 文件名。
+    """
+    try:
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        print(f"数据已成功保存到 {filename}")
+    except Exception as e:
+        print(f"保存 JSON 文件时出错：{e}")
+
+
 # 主程序
 def main():
     """
@@ -100,6 +118,9 @@ def main():
     print("获取到的汇率信息：")
     for currency, rate in combined_data.items():
         print(f"{currency}: {rate}")
+
+    # 保存数据为 JSON 文件
+    save_to_json(combined_data)
 
     # 条件判断并发送消息
     try:
