@@ -94,6 +94,23 @@ def save_to_json(data, filename="exchange_rates.json"):
         filename (str): 文件名。
     """
     try:
+        # 获取当前时间
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # 将当前时间添加到数据中
+        data["timestamp"] = current_time
+
+        # 尝试读取现有文件中的数据
+        try:
+            with open(filename, "r", encoding="utf-8") as f:
+                existing_data = json.load(f)
+        except FileNotFoundError:
+            existing_data = {}
+
+        # 将新数据添加到现有数据中
+        existing_data.update(data)
+
+        # 保存更新后的数据
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
         print(f"数据已成功保存到 {filename}")
