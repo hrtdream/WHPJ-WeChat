@@ -24,7 +24,7 @@ jobs:
       env:
         APPKEY: ${{ secrets.APPKEY }}
       run: |
-        python main.py > exchange_rates.json
+        python main.py
     - name: Upload json file
       uses: actions/upload-artifact@v4
       with:
