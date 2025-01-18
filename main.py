@@ -44,7 +44,7 @@ def scrape_exchange_rates(url, target_currencies):
                 if cols and cols[0] in target_currencies:
                     data[cols[0]] = {
                         "rate": cols[3],  # 现汇汇率位于第 4 列
-                        "updateTime": f"{cols[6]} {cols[7]}",
+                        "updateTime": cols[6],
                     }
             return data
         else:
