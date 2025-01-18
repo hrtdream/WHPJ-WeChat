@@ -1,7 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import time
-from datetime import datetime, timedelta
 import os
 import json
 
@@ -12,7 +10,7 @@ URLS = [
 ]
 
 # 设置目标币种
-TARGET_CURRENCIES = ["欧元", "新加坡元"]
+TARGET_CURRENCIES = ["新加坡元", "美元", "欧元", "英镑", "日元", "韩元"]
 
 
 # 爬取汇率数据
@@ -44,7 +42,10 @@ def scrape_exchange_rates(url, target_currencies):
             for row in rows[1:]:  # 跳过表头
                 cols = [col.text.strip() for col in row.find_all("td")]
                 if cols and cols[0] in target_currencies:
-                    data[cols[0]] = cols[3]  # 现汇汇率位于第 4 列
+                    data[cols[0]] = {
+                        "rate": cols[3],  # 现汇汇率位于第 4 列
+                        "updateTime": f"{cols[6]} {cols[7]}",
+                    }
             return data
         else:
             print(f"请求失败，状态码：{response.status_code}")
@@ -94,14 +95,6 @@ def save_to_json(data, filename="exchange_rates.json"):
         filename (str): 文件名。
     """
     try:
-        # 获取当前时间
-        current_time = (datetime.now() + timedelta(hours=8)).strftime(
-            "%Y-%m-%d %H:%M:%S"
-        )
-
-        # 将当前时间添加到数据中
-        data["timestamp"] = current_time
-
         # 尝试读取现有文件中的数据
         try:
             with open(filename, "r", encoding="utf-8") as f:
@@ -139,26 +132,7 @@ def main():
         print(f"{currency}: {rate}")
 
     # 保存数据为 JSON 文件
-    save_to_json(combined_data)
-
-    # 改为通过微信小程序查看，不再通过传息发送消息
-    # 条件判断并发送消息
-    # try:
-    #     euro_rate = float(combined_data.get("欧元", "1000"))
-    #     sgd_rate = float(combined_data.get("新加坡元", "1000"))
-
-    #     if euro_rate < 760:
-    #         send_to_wechat(f"汇率提醒：欧元降至 {euro_rate}")
-    #     time.sleep(0.5)  # 设置延迟防止发送消息过于频繁
-    #     if sgd_rate < 539:
-    #         send_to_wechat(f"汇率提醒：新加坡元降至 {sgd_rate}")
-    #     time.sleep(0.5)  # 设置延迟防止发送消息过于频繁
-    #     if datetime.now().hour >= 12:
-    #         send_to_wechat(
-    #             f"{datetime.now().year}年{datetime.now().month}月{datetime.now().day}日，新加坡元：{sgd_rate}，欧元：{euro_rate}"
-    #         )
-    # except ValueError as e:
-    #     print(f"解析汇率时出错：{e}")
+    save_to_json(combined_data, "current_rates.json")
 
 
 if __name__ == "__main__":
