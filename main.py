@@ -86,7 +86,7 @@ def send_to_wechat(title):
 
 
 # 保存数据为 JSON 文件
-def save_to_json(data, filename="exchange_rates.json"):
+def save_to_json(data, filename="current_rates.json"):
     """
     将数据保存为 JSON 文件。
 
@@ -132,7 +132,7 @@ def main():
         print(f"{currency}: {rate}")
 
     # 保存数据为 JSON 文件
-    save_to_json(combined_data, "current_rates.json")
+    save_to_json(combined_data)
 
 
 if __name__ == "__main__":
