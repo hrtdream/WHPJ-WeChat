@@ -95,6 +95,12 @@ def main():
     for url in URLS:
         history_data = scrape_exchange_rates(url, TARGET_CURRENCIES, history_data)
 
+    # 对时间键排序
+    for currency, dates in history_data.items():
+        for date, times in dates.items():
+            sorted_times = dict(sorted(times.items(), key=lambda x: x[0]))
+            history_data[currency][date] = sorted_times
+
     if not history_data:
         print("未获取到任何汇率数据。")
         return
