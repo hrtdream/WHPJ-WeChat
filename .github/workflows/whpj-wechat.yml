@@ -28,7 +28,7 @@ jobs:
     - name: Upload json file
       uses: EndBug/add-and-commit@v9
       with:
-        add: exchange_rates.json
+        add: current_rates.json
         pull: "--rebase --autostash ."
         message: "upadte generated json automatically"
         default_author: github_actions
